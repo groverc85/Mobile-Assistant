@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block title %}订单确认{% endblock %}
+{% block head %}
+    <style  type="text/css">
+    input[type="radio"] ,
+    input[type="checkbox"]{
+      margin: 3px 3px 0px 5px;
+      display: none;
+    }
+    </style>
+{% endblock %}
+{% block header %}订单确认
+{% endblock %}
+{% block content %}
+    <form id="form1" method="post" data-ajax="false" action="{{url_for('.make_order', actid=actid, timelineid=timelineid)}}">
+        {% if orders[0] %}
+        <ul data-role="listview">
+            <li data-role="list-divider">火车订单</li>
+            <li>车次 {{orders[0].station_train_code}}</li>
+            <li>出发站 {{orders[0].from_station_name}}</li>
+            <li>到达站 {{orders[0].to_station_name}}</li>
+            <li>出发时间 {{orders[0].depart_datetime}}</li>
+            <li>到达时间 {{orders[0].arrive_datetime}}</li>
+            <fieldset data-role="controlgroup" data-iconpos="right">
+                {% for ticket in orders[0].tickets_info %}
+                <label for="leave_train{{ticket.type}}">{{ticket.name}}
+                    <span style = "color:green">{{ticket.price}}</span>
+                    <span></span>
+                    {{ticket.amount}}
+                </label>
+                <input type="radio" name="leave_train" id="leave_train{{ticket.type}}" value="{{ticket.type}}" {% if ticket.amount=='--' or ticket.amount=='*' or ticket.amount=='无' %} disabled="disabled" {% endif %}>
+                {% endfor %}
+            </fieldset>
+        </ul>
+        {% endif %}
+
+        {% if orders[1] %}
+        <ul data-role="listview"> 
+            <li data-role="list-divider">航班订单</li>
+            <li>航班 {{orders[1].flightcomname}} {{orders[1].flightNum}}</li>
+            <li>出发机场 {{orders[1].dep_arp}}</li>
+            <li>到达机场 {{orders[1].arr_arp}}</li>
+            <li>出发时间 {{orders[1].dep_time}}</li>
+            <li>到达时间 {{orders[1].arr_time}}</li>
+            <fieldset data-role="controlgroup" data-iconpos="right">
+                {% for ticket in orders[1].tickets_info %}
+                <label for="leave_flight{{ticket.cabintype}}">{{ticket.cabintype}}
+                    <span style = "color:green">{{ticket.price}}</span>
+                    <span></span>
+                    {{ticket.amount}}
+                </label>
+                <input type="radio" name="leave_flight" id="leave_flight{{ticket.cabintype}}" value="{{ticket.cabintype}}" {% if ticket.amount=='--' or ticket.amount=='*' or ticket.amount=='无' %} disabled="disabled" {% endif %}>
+                {% endfor %}
+            </fieldset>
+        </ul>
+        {% endif %}
+
+        {% if orders[2] %}
+        <ul data-role="listview">
+            <li data-role="list-divider">酒店订单</li>
+            <li>酒店名称 {{orders[2].name}}</li>
+            <li>地址 {{orders[2].address}}</li>
+            <li>联系方式 {{orders[2].telephone}}</li>
+            <li>评价 {{orders[2].overall_rating}}/5</li>
+            <li>{{orders[2].checkin_date}}入住 {{orders[2].checkout_date}}离店</li>
+            <fieldset data-role="controlgroup" data-iconpos="right">
+                {% for i in range(orders[2].bed_types|length) %}
+                <label for="hotel{{i}}">{{orders[2].bed_types[i]}} <span style = "color:green">{{orders[2].prices[i]}}</span></label>
+                <input type="radio" name="hotel" id="hotel{{i}}" value="{{orders[2].bed_types[i]}}">
+                {% endfor %}
+            </fieldset>
+        </ul>
+        {% endif %}
+
+        {% if orders[3] %}
+        <ul data-role="listview">
+            <li data-role="list-divider">火车订单</li>
+            <li>车次 {{orders[3].station_train_code}}</li>
+            <li>出发站 {{orders[3].from_station_name}}</li>
+            <li>到达站 {{orders[3].to_station_name}}</li>
+            <li>出发时间 {{orders[3].depart_datetime}}</li>
+            <li>到达时间 {{orders[3].arrive_datetime}}</li>
+            <fieldset data-role="controlgroup" data-iconpos="right">
+                {% for ticket in orders[3].tickets_info %}
+                <label for="leave_train{{ticket.type}}">{{ticket.name}}
+                    <span style = "color:green">{{ticket.price}}</span>
+                    <span></span>
+                    {{ticket.amount}}
+                </label>
+                <input type="radio" name="return_train" id="return_train{{ticket.type}}" value="{{ticket.type}}" {% if ticket.amount=='--' or ticket.amount=='*' or ticket.amount=='无' %} disabled="disabled" {% endif %}>
+                {% endfor %}
+            </fieldset>
+        </ul>
+        {% endif %}
+
+        {% if orders[4] %}
+        <ul data-role="listview"> 
+            <li data-role="list-divider">航班订单</li>
+            <li>航班 {{orders[4].flightcomname}} {{orders[4].flightNum}}</li>
+            <li>出发机场 {{orders[4].dep_arp}}</li>
+            <li>到达机场 {{orders[4].arr_arp}}</li>
+            <li>出发时间 {{orders[4].dep_time}}</li>
+            <li>到达时间 {{orders[4].arr_time}}</li>
+            <fieldset data-role="controlgroup" data-iconpos="right">
+                {% for ticket in orders[4].tickets_info %}
+                <label for="return_flight{{ticket.cabintype}}">
+                    {{ticket.cabintype}}
+                    <span style = "color:green">{{ticket.price}}</span>
+                    <span></span>
+                    {{ticket.amount}}
+                </label>
+                <input type="radio" name="return_flight" id="return_flight{{ticket.cabintype}}" value="{{ticket.cabintype}}" {% if ticket.amount=='--' or ticket.amount=='*' or ticket.amount=='无' %} disabled="disabled" {% endif %}>
+                {% endfor %}
+            </fieldset>
+        </ul>
+        {% endif %}
+        <!-- data-ajax="false" 使提交按钮能正常跳转 -->
+        <input type="hidden" name="orders" id="orders" value='{{orders|tojson}}'>
+        <br>
+        <br>
+        <input type="submit" value="确&nbsp;定">
+    </form>
+{% endblock%}

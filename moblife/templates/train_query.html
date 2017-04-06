@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}火车票查询{% endblock %}
+{% block content %}
+        <h2>请选择地点及时间</h2>
+        <!-- data-ajax="false" 使提交按钮能正常跳转 -->
+        <form method="get" data-ajax="false" action="{{ url_for('.train_list')}}">
+  			<label for="origin">出发地：</label>
+  			<input type="text" name="origin" id="origin">
+  			<label for="destination">目的地：</label>
+  			<input type="text" name="destination" id="destination">
+  			<label for="time">出发日期:</label>
+  			<input type="date" name="time" id="time">
+  			<input type="submit" data-inline="true" value="查询">
+		  </form>
+{% endblock%}
+

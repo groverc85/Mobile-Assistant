@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block title %}注册{% endblock %}
+{% block head %}
+  <style type="text/css">
+    img {display:block; margin:0 auto;}
+  </style>
+{% endblock %}
+
+{% block header %}注册
+
+{% endblock %}
+
+{% block content %}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class=flashes>
+            {% for category, message in messages %}
+                <div class="{{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+    <div class="col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8" data-role="content">
+        <form id="register" name="register" method="POST" data-ajax="false" action="{{url_for('.register')}}">
+            <div class="form-body">
+            <legend>账户信息</legend>
+            <hr style="color:blue;height:2px;"/>
+            <div class="form-group">
+                <label for="account" id="account" name="account">账号:</label>
+                <input type="text" id="account" name="account">
+            </div>
+            <div class="form-group">
+                <label for="password">密码:</label>
+                <input type="password" id="password" name="password" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="nickname">昵称:</label>
+                <input type="text" id="nickname" name="nickname">
+            </div>
+            <hr />
+            <legend>详细信息</legend>
+            <div class="form-group">
+                <label for="name">真实姓名:</label>
+                <input type="text" id="name" name="name">
+            </div>
+            <div class="form-group">
+                <label>性别:</label>
+                <fieldset data-role="controlgroup" data-type="horizontal">
+                    <label for="male">男</label>
+                    <input style="display:none" type="radio" checked="checked" id="male" name="sex" value="male">
+                    <label for="female">女</label>
+                    <input style="display:none"type="radio" id="female" name="sex" value="female">
+                </fieldset>
+            </div>
+            <div class="form-group">
+                <label for="phone">手机:</label>
+                <input type="tel" id="phone" name="phone">
+            </div>
+            <div class="form-group">
+                <label for="IDNo">身份证号:</label>
+                <input type="text" id="IDNo" name="IDNo">
+            </div>
+            <div class="form-group">
+                <label for="address">国家:</label>
+                <input type="text" id="country" name="country" value="中国">
+            </div>
+            <div class="form-group">
+                <label for="address">省份:</label>
+                <input type="text" id="province" name="province">
+            </div>
+            <div class="form-group">
+                <label for="city">城市:</label>
+                <input type="text" id="city" name="city">
+            </div>
+            </div>
+            <div class="form-actions">
+                <input type="submit" class="form-control btn btn-primary" value="注册" /> 
+                 已注册？<a href="{{url_for('.login')}}">立即登录</a>
+            </div>
+        </form>
+        <div>
+        </div>
+    </div>
+  
+{% endblock%}
+{% block body %}
+     
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}住宿服务详情{% endblock %}
+{% block header %}住宿服务详情{% endblock %}
+{% block content %}
+            <h2>{{route.name}}</h2>
+            <p>地址：{{route.address}}</p>
+            <div data-role="controlgroup" data-type="horizontal">
+                <a href="#map_page?action=show_lodging&index={{index}}" rel="external" data-role="button" data-mini="true" data-inline="true">查看地图</a>
+                <a href="#" rel="external" data-role="button" data-mini="true" data-inline="true">预定</a>
+            </div>
+            <hr />
+            <p>价格：{{route.detail_info.price}}元</p>
+            <p>综合评价：{{route.detail_info.overall_rating}}</p>
+            <p>距离：{{(route.detail_info.distance/1000)}}公里</p>
+            <p>星级：{{route.detail_info.level}}</p>
+            <p>类别：{{route.detail_info.tag}}</p>
+            <p>酒店服务：{{route.detail_info.hotel_facility}}</p>
+{% endblock%}
+{% block footer %}
+            <div data-role="navbar">
+              <ul>
+                <li><a href="#route_page" data-role="button">返回</a></li>
+              </ul>
+            </div>
+{% endblock %}

@@ -1,0 +1,140 @@
+*{margin:0px; padding:0px;}
+body {
+	background:#222;
+	font-family:Georgia, serif;
+	color:#fff;
+}
+#top {
+	width: 500px;
+	height: 200px;
+	margin-top: 30px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	padding-left: 20px;
+	padding-right: 20px;
+
+}
+#title {
+	max-width: 300px;
+	font-size: 1.3em;
+	font-family: Microsoft YaHei;
+	float: left;
+	
+}
+#weatheranddate {
+	padding-top: 10px;
+	float: right;
+  
+}
+#date {
+	font-size: 1em;
+	margin: auto;
+	
+}
+#weather {
+	font-size: 1em;
+	margin: auto;
+
+}
+#topline {
+	min-height: 0px;
+	width: 500px;
+
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	border-color:#C1F5FA;
+	border:1px solid white;
+    -moz-box-shadow: 3px 3px 4px #333232;
+    -webkit-box-shadow: 3px 3px 4px #333232;
+    box-shadow: 3px 3px 4px #333232;
+}
+#bottom {
+    width: 500px;
+    height: 700px;
+    overflow: hidden;
+    margin-left: auto;
+	margin-right: auto;
+}
+#timeroll {
+	background: url('./images/dot.gif') 3px top repeat-y;
+	float: left;
+	width: 20%;
+}
+#content {
+	float: right;
+	width: 80%;
+}
+#content div {
+	display:block;
+	min-height: 200px;
+	font-size: 1.2em;
+	font-family: Microsoft YaHei;
+}
+#timeroll div {
+
+	font-size: 1.5em;
+	min-height: 200px;
+}
+.iselected {
+	height: 300px !important;
+	color: red !important;
+}
+.dselected {
+	height: 300px !important;
+	font-size: 1.6em !important;
+	color: yellow;
+}
+#timeline1 {
+	background: url('./images/biggerdot.gif') left center no-repeat;
+}
+
+
+#dates li{width:100px;height:100px;line-height:100px;font-size:24px;padding-left:10px;background:url('./images/biggerdot.png') left center no-repeat;}
+
+
+
+
+
+
+
+
+
+
+
+
+/*demo css*/
+#container {
+	width: 500px;
+	height: 400px;
+	overflow: hidden;
+	margin-top: 200px;
+	margin-left: auto;
+	margin-right: auto;
+
+}
+#dates {
+	width: 200px;
+	float: left;
+}
+#iss {
+	width: 300px;
+	float: right;
+}
+
+#dates div {
+	
+	height: 100px;
+}
+#iss div {
+	
+	height: 100px;
+}
+
+.s {
+	color: red;
+	height: 200px !important;
+}

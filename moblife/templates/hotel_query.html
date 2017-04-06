@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}酒店查询{% endblock %}
+{% block content %}
+        <h2>请选择地点及时间</h2>
+        <!-- data-ajax="false" 使提交按钮能正常跳转 -->
+        <form method="get" data-ajax="false" action="{{ url_for('.basic_hotel_list')}}">
+  			  <label for="city">城市</label>
+  			  <input type="text" name="city" id="city">
+
+  			  <label for="keyWord">关键字</label>
+  			  <input type="text" name="keyWord" id="keyWord" >
+
+			  <label for="price">价格（约）:</label>
+			  <input type="text" name="price" id="price" >
+
+  			  <input type="submit" data-inline="true" value="查询">
+		    </form>
+{% endblock%}

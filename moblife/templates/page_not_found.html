@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}页面不存在{% endblock %}
+{% block content %}
+    <h2>您访问的页面不存在，您可以换个姿势试试看</h2>
+    <br>
+    <a href="{{url_for('.index')}}">点我点我</a>
+{% endblock%}
+{% block footer %}
+    <h1 style="text-align:left; margin-left:10px;">{{ user.nickname }}</h1>
+{% endblock %}

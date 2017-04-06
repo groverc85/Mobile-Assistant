@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}车次列表{% endblock %}
+{% block content %}
+ 	{% if noResult == True %}
+      <p>无查询结果！<p>
+    {% else %}
+      {% for train in trains %}
+        <div data-role="collapsible">
+          <h1>{{train.trainnum}} 出发:{{train.start_sta}} {{train.start_time}} 抵达:{{train.end_sta}} {{train.end_time}}</h1>
+          <ul data-role="listview" data-inset="true">
+            {% for ticket in train.tickets %}
+              <li>
+              	<a href="" rel="external">
+                <p>{{ticket.name}} {{ticket.price}}元</p>
+                <p class="ui-li-aside">
+                  {% if ticket.restTickets == 0 %}
+                    <span style="color:gray">无票</span>
+                  {% elif ticket.restTickets < 11 %}
+                    <span style="color:red">仅剩{{ticket.restTickets}}张</span>
+                  {% else %}
+                    <span style="color:green">余票{{ticket.restTickets}}张</span>
+                  {% endif %}
+                </p>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endfor %}
+    {% endif %}           	  
+{% endblock%}

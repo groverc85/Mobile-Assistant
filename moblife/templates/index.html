@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% block title %}服务{% endblock %}
+{% block head %}
+  <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.0.8/css/swiper.css">-->
+  <link rel="stylesheet" href="{{url_for('.static', filename = 'swiper.min.css')}}">  
+  <script src="{{url_for('.static', filename = 'swiper.min.js')}}"></script>
+  <style type="text/css">
+    [data-role="content"] {
+      max-width: 100%;
+      width: 98%;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+    .content-img {
+      max-width: 100%;
+      width: auto;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #s-img {max-width: 100%}
+    #header {
+      max-width: 100%;
+      width: auto;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #service-table {
+      max-width: 100%;
+      width: auto;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    /*
+    #service-row {
+      width: auto;
+      margin-left: 0px;
+      margin-right: 0px;
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+    #service-td {
+      width: auto;
+      margin-left: 0px;
+      margin-right: 0px;
+      padding: 0px;
+    }
+    */
+    #service {
+      max-width: 32%
+      width: auto;
+      margin-left: 0px;
+      margin-right: 0px;
+      padding: 0px;
+    }
+  </style>
+{% endblock %}
+
+{% block header %}首页
+
+{% endblock %}
+
+{% block content %}
+  <div id="header">
+    <a href="http://moblife.duapp.com/">
+      <img class="content-img" src="{{url_for('.static', filename = 'images/headicon.png')}}">
+    </a>
+  </div>
+
+  <!-- Slider main container -->
+  <div class="swiper-container">
+    <!-- Additional required wrapper -->
+    <div class="swiper-wrapper">
+        <!-- Slides -->
+        <div class="swiper-slide"><img class="s-img" src="{{url_for('.static', filename = 'images/2.png')}}"></div>
+        <div class="swiper-slide"><img class="s-img" src="{{url_for('.static', filename = 'images/4.png')}}"></div>
+        <div class="swiper-slide"><img class="s-img" src="{{url_for('.static', filename = 'images/3.png')}}"></div>
+    </div>
+    <!-- If we need pagination -->
+    <div class="swiper-pagination"></div>
+    
+    <!-- If we need navigation buttons -->
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+    
+    <!-- If we need scrollbar -->
+    <div class="swiper-scrollbar"></div>
+    <!--<div id="slidesjs-log">Slide <span class="slidesjs-slide-number"></span> of 3</div>-->
+  </div>
+
+  <div>
+    <a href="{{url_for('.act_new')}}"><img class="content-img" src="{{url_for('.static', filename = 'images/setout.png')}}"></a>
+  </div>
+  <table class="service-table">
+    <tr class="service-row">
+      <td class="service-td"><a href="http://m.weather.com.cn/"><img class="service" src="{{url_for('.static', filename = 'images/qweather.png')}}"></a></td>
+      <td class="service-td"><a href="{{url_for('.basic_plane', openid = openid)}}"><img class="service" src="{{url_for('.static', filename = 'images/qflight.png')}}"></a></td>
+      <td class="service-td"><a href="{{url_for('.basic_train', openid = openid)}}"><img class="service" src="{{url_for('.static', filename = 'images/qtrain.png')}}"></a></td>
+    </tr>
+    <tr class="service-row">
+      <td class="service-td"><a href="{{url_for('.basic_lodging', openid = openid)}}"><img class="service" src="{{url_for('.static', filename = 'images/qhotel.png')}}"></a></td>
+      <td class="service-td"><a href="http://m.dianping.com/"><img class="service" src="{{url_for('.static', filename = 'images/qfood.png')}}"></a></td>
+      <td class="service-td"><a href="http://map.baidu.com"><img class="service" src="{{url_for('.static', filename = 'images/qtraffic.png')}}"></a></td>
+    </tr>
+  </table>
+  
+  <script>
+  $(document).ready(function () {
+    if ($(document).width()>600) {
+      $('[data-role="content"]').width(600);
+      $('.s-img').width($('[data-role="content"]').width());
+      $('.swiper-container').height(215);
+      $('.service-table').width(600);
+      $('.service').width($('.service-table').width()*0.32);
+      //$('.swiper-container').width($('#headerimg').width()); $('#headerimg').width()
+      //$('.ui-grid-b').height($('#headerimg').width()/3);
+    }
+    else{
+      //$('[data-role="content"]').width($(window).width()-5);
+      $('.s-img').width($('[data-role="content"]').width());
+      $('.swiper-container').height($('[data-role="content"]').width()*0.37);
+      //$('.service-table').width($('[data-role="content"]').width());
+      $('.service').width($('[data-role="content"]').width()*0.32);
+    }
+
+    var mySwiper = new Swiper ('.swiper-container', {
+      initialSlide: 0,
+      // Optional parameters
+      direction: 'horizontal',
+      autoplay: 3000,
+      loop: true,
+      
+      // If we need pagination
+      pagination: '.swiper-pagination',
+      
+      // Navigation arrows
+      nextButton: '.swiper-button-next',
+      prevButton: '.swiper-button-prev',
+      
+      // And if we need scrollbar
+      //scrollbar: '.swiper-scrollbar',
+      // onSlideChangeEnd(mySwiper) {
+      //   // Change slide number on animation complete
+      //   $('#slidesjs-log .slidesjs-slide-number').text(mySwiper.activeIndex);
+      // }
+    });
+  });
+  </script>
+{% endblock%}
+{% block body %}
+     
+{% endblock %}

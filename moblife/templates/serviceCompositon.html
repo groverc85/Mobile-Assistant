@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+    <title>活动计划时间轴</title>
+    <link rel="stylesheet" href="{{url_for('.static', filename = 'timeline.css')}}">
+    <script src="{{url_for('.static', filename = 'modernizr.js')}}"></script>
+
+  </head>
+  <body>
+	<header>
+		<h1>行程时间列表</h1>
+	</header>
+	<section id="cd-timeline" class="cd-container">
+		{% for time in timeline %}
+		<div class="cd-timeline-block">
+            <div class="cd-timeline-left-container">
+                <div class="cd-timeline-img cd-picture">
+                    <img src="/static/images/cd-icon-picture.svg" alt="Picture">
+                </div><!-- cd-timeline-img -->
+                <div class="cd-timeline-sidetime">
+                  {% if time.time %}
+                  {{time.time[5:]}}
+                  {% else %}8:30
+                  {% endif %}
+                </div>
+            </div>
+			<div class="cd-timeline-content">
+
+              <h2>{{time.title}}</h2>
+              {% if time.type=='train' %}
+                <h3>乘坐火车前往{{time.detail['queryLeftNewDTO']['to_station_name']}}</h3>
+                <p>车次:{{time.detail['queryLeftNewDTO']['station_train_code']}}</p>
+                <p>发车时间:{{time.detail['queryLeftNewDTO']['start_time']}}</p>
+                <p>抵达时间:{{time.detail['queryLeftNewDTO']['arrive_time']}}</p>
+              {% elif time.type=='plane' %}
+                <h3>乘坐飞机前往{{act.destCity}}</h3>
+                <p>航班号:{{time.detail['flightNum']}}</p>
+                <p>起飞时间:{{time.detail['dep_time']}}</p>
+                <p>抵达时间:{{time.detail['arr_time']}}</p>
+                <p>准点率:{{time.detail['ontimerate']}}</p>
+              {% elif time.type=='busStart' or time.type=='busDest' %}
+                <h3>公交出行</h3>
+                {% for step in time.detail['steps'] %}
+                <p>{{loop.index}}.{{step[0]['stepInstruction'] | safe}}</p>
+                {% endfor %}
+                <p>距离：约{{time.detail['distance'] // 1000}}千米</p>                    
+                <p>历时：约{{time.detail["duration"] // 60}}分</p>
+              {% elif time.type=='taxi' or time.type=='taxi' %}
+                <p>打车前往目的地</p>
+                <p>距离：约{{time.detail['distance']// 1000}}千米</p>                    
+                <p>历时：约{{time.detail["duration"] // 60}}分</p>
+                <p>价格：约{{time.detail["detail"][0]["total_price"]}}元</p>
+              {% elif time.type=='driving' or time.type=='taxiStart' or time.type=='taxiDest' %}
+                <p>驾车前往目的地</p>
+                <p>距离：约{{time.detail['distance']// 1000}}千米</p>                    
+                <p>历时：约{{time.detail["duration"] // 60}}分</p>
+
+				{% elif time.type=='hotel' %}
+                <p>酒店名称:{{time.detail['name']}}</p>
+                <p>酒店电话:{{time.detail['telephone']}}</p>
+                <p>酒店地址:{{time.detail['address']}}</p>
+                <a href="{{time.detail.detail_info.detail_url}}" class="cd-read-more">酒店详情</a>
+				{% elif time.type=='rest' %}
+                <p>餐厅名称：{{time.detail['name']}}</p>
+                <p>餐厅电话:{{time.detail['telephone']}}</p>
+                <p>餐厅地址:{{time.detail['address']}}</p>
+                <p>餐厅评分:{{time.detail.detail_info['overall_rating']}}</p>
+                <a href="{{time.detail.detail_info.detail_url}}" class="cd-read-more">餐厅详情</a>
+				{% elif time.type=='activity' %}
+				<p>活动地址:{{act.destAddr}}</p>
+				<p>活动信息:{{act.note}}</p>
+				<span class="cd-date">活动开始：{{act.startTime}}至{{act.endTime}}</span>
+				{% else %}
+                    <p>{{ time.type }}</p>
+                    <p>{{ time.title}}</p>
+                {% endif %}
+				</div> <!-- cd-timeline-content -->
+		     </div>
+		{% endfor %}
+			 <!-- cd-timeline-block -->
+
+	</section> <!-- cd-timeline -->	
+  </body>
+</html>

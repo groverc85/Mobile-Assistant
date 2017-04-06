@@ -1,0 +1,23 @@
+﻿{% extends 'base.html' %}
+{% block title %}餐饮列表{% endblock %}
+{% block content %}
+    	  <ul data-role="listview" data-inset="true">
+    	  	{% if noResult == True %}
+    	  		<p>无查询结果！<p>
+    	  	{% else %}
+    			{% for dinner in dinners %}
+
+    			  <li><a href="{{dinner.url}}" rel="external">
+    			  		<h2>{{dinner.name}}</h2>
+    			  		<p>地址：{{dinner.address}} 价格：{{dinner.price}}</p>
+    			  		<p class="ui-li-aside"></p>
+    			  	  </a>
+    			  </li>
+
+    			{% endfor %}
+    		{% endif %}
+    	  </ul>
+{% endblock%}
+{% block footer %}
+        <h1>我是你的小秘书</h1>
+{% endblock %}

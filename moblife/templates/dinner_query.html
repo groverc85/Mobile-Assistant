@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}美食查询{% endblock %}
+{% block header %}美食查询{% endblock %}
+{% block content %}
+        <h2>请选择地点</h2>
+        <!-- data-ajax="false" 使提交按钮能正常跳转 -->
+        <form method="post" data-ajax="false" action="{{url_for('.basic_catering_list')}}">
+  			  <label for="location">地点</label>
+  			  <input type="text" name="location" id="location">
+
+  			  <label for="keyWord">关键字</label>
+  			  <input type="text" name="keyWord" id="keyWord" >
+
+			  <label for="price">价格（约）:</label>
+			  <input type="text" name="price" id="price" >
+
+  			  <input type="submit" data-inline="true" value="查询">
+		    </form>
+{% endblock%}

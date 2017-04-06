@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}航班列表{% endblock %}
+{% block content %}
+        {% if noResult == True %}
+          <p>无查询结果！<p>
+        {% else %}
+          {% for plane in planes %}
+            <div data-role="collapsible">
+              <h1>{{plane.flightnum}} {{plane.flightcom}} 起飞:{{plane.start_airp}}机场{{plane.start_time}} 抵达:{{plane.end_airp}}机场{{plane.end_time}}</h1>
+              <ul data-role="listview" data-inset="true">
+                {% for ticket in plane.tickets %}
+                  <li><a href="" rel="external">
+                    <p>{{ticket.price}}元 {% if ticket.drate == 10 %}全价{% else %}{{ticket.drate}}折{% endif %}
+                      {% if ticket.cabintype == 'F' or ticket.cabintype == 'P'%}头等舱
+                      {% elif ticket.cabintype == 'J' %}公务舱
+                      {% else %}经济舱{% endif %}</p>
+
+                    <p class="ui-li-aside">{% if ticket.amount < 5 %}<span style="color:red">仅剩{{ticket.amount}}张</span>{% endif %}</p>
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endfor %}
+        {% endif %}                   
+{% endblock%}

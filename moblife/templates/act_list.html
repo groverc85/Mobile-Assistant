@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}活动{% endblock %}
+{% block header %}活动列表{% endblock %}
+{% block content %}
+        <ul data-role="listview" data-inset="true">
+            {% for act in acts %}
+            <li>
+                <a href="/act/service?actid={{act.id}}" rel="external">
+                    <h2>{{loop.index}}.{{act.title[:6]}}</h2>
+                    <p class="ui-li-aside">从<span style="font-weight:bold">{{act.start_city}}</span>出发</p>
+                    <p>{{act.note}}</p>    
+                    <p>活动时间{{act.begin_datetime}}至{{act.end_datetime}}</p>
+                </a>
+                <a class="ui-btn ui-shadow ui-btn-icon-right ui-icon-edit" href="/act/new?actid={{act.id}}" rel="external">
+                  修改
+                </a>
+            </li>
+            {% else %}
+            <li>
+                <em>暂无活动记录！</em>
+            </li>
+            {% endfor %}
+        </ul>
+{% endblock%}
+{% block body %}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}火车详情{% endblock %}
+{% block content %}
+	  <ul data-role="listview" data-inset="true">
+		<li>车次：{{details.trainNum}}</li>
+		<li>出发站：{{details.dptStation}}</li>
+		<li>到达站：{{details.arrStation}}</li>
+		<li>出发时间：{{details.dptTime}}</li>
+		<li>到达时间：{{details.arrTime}}</li>
+		<li>历时：{{details.durhours}}小时{{details.durmins}}分</li>
+		<li>准点率：{{details.timeRate}}</li>
+	  </ul>
+      <p><a href="#" data-role="button" data-rel="back">预定</a></p>
+{% endblock%}

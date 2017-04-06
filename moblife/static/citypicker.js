@@ -1,0 +1,1 @@
+hotcity = '<tr><td>北京</td><td>上海</td><td>广州</td><td>深圳</td><td>成都</td></tr><tr><td>重庆</td><td>厦门</td><td>昆明</td><td>杭州</td><td>西安</td></tr><tr><td>武汉</td><td>长沙</td><td>南京</td><td>大连</td><td>郑州</td></tr><tr><td>青岛</td><td>天津</td><td>三亚</td><td>海口</td><td>乌鲁木齐</td></tr>';

@@ -1,0 +1,328 @@
+{% extends 'base.html' %}
+{% block title %}设置{% endblock %}
+{% block head %}
+    <script type="text/javascript">
+        function checkboxStr(){
+            trainArr = document.getElementsByName('train_type');
+            var trainResult = '';
+            for(var i in trainArr){
+                if(trainArr[i].checked){
+                    trainResult += trainArr[i].value;
+                    trainArr[i].checked = false;
+                }
+            }
+            document.getElementById('form1').train_type_.value = trainResult;
+            
+            flightArr = document.getElementsByName('flight_company');
+            var flightResult = '';
+            for(var i in flightArr){
+                if(flightArr[i].checked){
+                    flightResult += flightArr[i].value;
+                    flightResult += ','
+                    flightArr[i].checked = false;
+                }
+            }
+            document.getElementById('form1').flight_company_.value = flightResult;
+
+            hotelArr = document.getElementsByName('hotel');
+            var hotelResult = '';
+            for(var i in hotelArr){
+                if(hotelArr[i].checked){
+                    hotelResult += hotelArr[i].value;
+                    hotelResult += '$'
+                    hotelArr[i].checked = false;
+                }
+            }
+            document.getElementById('form1').hotel_.value = hotelResult;
+
+            restaurantArr = document.getElementsByName('restaurant');
+            var restaurantResult = '';
+            for(var i in restaurantArr){
+                if(restaurantArr[i].checked){
+                    restaurantResult += restaurantArr[i].value;
+                    restaurantResult += '$'
+                    restaurantArr[i].checked = false;
+                }
+            }
+            document.getElementById('form1').restaurant_.value = restaurantResult;
+        }
+    </script>
+    <style  type="text/css">
+    input[type="radio"] ,
+    input[type="checkbox"]{
+      margin: 3px 3px 0px 5px;
+      display: none;
+    }
+   
+    </style>
+{% endblock %}
+{% block header %}
+<div>偏好设置</div>
+    <div id="right-top"  style="top:0px"class="col-md-2">
+        <button data-ajax="false" class="cd-read-more btn" onclick="$('#form1').submit()">保存</button>
+    </div>
+{% endblock %}
+{% block content %}
+            <form id="form1" method="post" data-ajax="false" action="{{url_for('.act_pref')}}" onsubmit="checkboxStr()">
+
+                <h3>起程交通</h3>
+                <fieldset data-role="controlgroup" data-type="horizontal">
+                    <legend>出发城市交通：</legend>
+                    <label for="lsbus">公交</label>
+                    <input type="radio" name="leave_start_traffic" id="lsbus" value="bus" {% if pref['leave_start_traffic'] == 'bus'%} checked {%endif%}>
+                    <label for="lstaxi">打车</label>
+                    <input type="radio" name="leave_start_traffic" id="lstaxi" value="taxi" {% if pref['leave_start_traffic'] == 'taxi'%} checked {%endif%}>  
+                    <label for="lsdriving">驾车</label>
+                    <input type="radio" name="leave_start_traffic" id="lsdriving" value="driving" {% if pref['leave_start_traffic'] == 'driving'%} checked {%endif%}>
+                </fieldset>
+                <fieldset data-role="controlgroup" data-type="horizontal">
+                    <legend>市际交通：</legend>
+                    <label for="lmtrain">火车</label>
+                    <input type="radio" name="leave_main_traffic" id="lmtrain" value="train" {% if pref['leave_main_traffic'] == 'train'%} checked {%endif%}>
+                    <label for="lmplane">飞机</label>
+                    <input type="radio" name="leave_main_traffic" id="lmplane" value="plane" {% if pref['leave_main_traffic'] == 'plane'%} checked {%endif%}>
+                    <label for="lmdriving">驾车</label>
+                    <input type="radio" name="leave_main_traffic" id="lmdriving" value="driving" {% if pref['leave_main_traffic'] == 'driving'%} checked {%endif%}>
+                </fieldset>
+                <fieldset data-role="controlgroup" data-type="horizontal">
+                    <legend>到达城市交通：</legend>
+                    <label for="ldbus">公交</label>
+                    <input type="radio" name="leave_dest_traffic" id="ldbus" value="bus" {% if pref['leave_dest_traffic'] == 'bus'%} checked {%endif%}>
+                    <label for="ldtaxi">打车</label>
+                    <input type="radio" name="leave_dest_traffic" id="ldtaxi" value="taxi" {% if pref['leave_dest_traffic'] == 'taxi'%} checked {%endif%}>  
+                    <label for="lddriving">驾车</label>
+                    <input type="radio" name="leave_dest_traffic" id="lddriving" value="driving" {% if pref['leave_dest_traffic'] == 'driving'%} checked {%endif%}>
+                </fieldset>
+
+                <h3>餐饮住宿</h3>
+                <fieldset data-role="controlgroup" data-type="horizontal">
+                    <legend>酒店(多选)：</legend>
+                    <label for="kuaijie">快捷</label>
+                    <input type="checkbox" name="hotel" id="kuaijie" value="快捷酒店" {% if '快捷酒店' in pref['hotel'] %} checked {%endif%}>
+                    <label for="five">五星级</label>
+                    <input type="checkbox" name="hotel" id="five" value="五星级酒店" {% if '五星级酒店' in pref['hotel'] %} checked {%endif%}>
+                    <label for="four">四星级</label>
+                    <input type="checkbox" name="hotel" id="four" value="四星级酒店" {% if '四星级酒店' in pref['hotel'] %} checked {%endif%}>
+                    <label for="three">三星级</label>
+                    <input type="checkbox" name="hotel" id="three" value="三星级酒店" {% if '三星级酒店' in pref['hotel'] %} checked {%endif%}>
+                    <label for="youth">青年旅社</label>
+                    <input type="checkbox" name="hotel" id="youth" value="青年旅社" {% if '青年旅社' in pref['hotel'] %} checked {%endif%}>
+                    <label for="inn">旅馆</label>
+                    <input type="checkbox" name="hotel" id="inn" value="旅馆" {% if '旅馆' in pref['hotel'] %} checked {%endif%}>
+                    <input type="hidden" name="hotel_">
+                </fieldset>
+                <fieldset data-role="controlgroup" data-type="horizontal">
+                    <legend>餐厅酒店(多选)：</legend>
+                    <label for="chinese">中餐</label>
+                    <input type="checkbox" name="restaurant" id="chinese" value="中餐馆" {% if '中餐馆' in pref['restaurant'] %} checked {%endif%}>
+                    <label for="west">西餐</label>
+                    <input type="checkbox" name="restaurant" id="west" value="西餐厅" {% if '西餐厅' in pref['restaurant'] %} checked {%endif%}>
+                    <label for="rihan">日韩料理</label>
+                    <input type="checkbox" name="restaurant" id="rihan" value="日韩料理" {% if '日韩料理' in pref['restaurant'] %} checked {%endif%}>
+                    <label for="fastfood">快餐</label>
+                    <input type="checkbox" name="restaurant" id="fastfood" value="快餐" {% if '快餐' in pref['restaurant'] %} checked {%endif%}>
+                    <label for="huoguo">火锅</label>
+                    <input type="checkbox" name="restaurant" id="huoguo" value="火锅" {% if '火锅' in pref['restaurant'] %} checked {%endif%}>
+                    <input type="hidden" name="restaurant_">
+                </fieldset>
+
+                <h3>返程交通</h3>
+                <fieldset data-role="controlgroup" data-type="horizontal">
+                    <legend>出发城市交通：</legend>
+                    <label for="rsbus">公交</label>
+                    <input type="radio" name="return_start_traffic" id="rsbus" value="bus" {% if pref['return_start_traffic'] == 'bus'%} checked {%endif%}>
+                    <label for="rstaxi">打车</label>
+                    <input type="radio" name="return_start_traffic" id="rstaxi" value="taxi" {% if pref['return_start_traffic'] == 'taxi'%} checked {%endif%}>  
+                    <label for="rsdriving">驾车</label>
+                    <input type="radio" name="return_start_traffic" id="rsdriving" value="driving" {% if pref['return_start_traffic'] == 'driving'%} checked {%endif%}>
+                </fieldset>
+                <fieldset data-role="controlgroup" data-type="horizontal">
+                    <legend>市际交通：</legend>
+                    <label for="rmtrain">火车</label>
+                    <input type="radio" name="return_main_traffic" id="rmtrain" value="train" {% if pref['return_main_traffic'] == 'train'%} checked {%endif%}>
+                    <label for="rmplane">飞机</label>
+                    <input type="radio" name="return_main_traffic" id="rmplane" value="plane" {% if pref['return_main_traffic'] == 'plane'%} checked {%endif%}>
+                    <label for="rmdriving">驾车</label>
+                    <input type="radio" name="return_main_traffic" id="rmdriving" value="driving" {% if pref['return_main_traffic'] == 'driving'%} checked {%endif%}>
+                </fieldset>
+                <fieldset data-role="controlgroup" data-type="horizontal">
+                    <legend>到达城市交通：</legend>
+                    <label for="rdbus">公交</label>
+                    <input type="radio" name="return_dest_traffic" id="rdbus" value="bus" {% if pref['return_dest_traffic'] == 'bus'%} checked {%endif%}>
+                    <label for="rdtaxi">打车</label>
+                    <input type="radio" name="return_dest_traffic" id="rdtaxi" value="taxi" {% if pref['return_dest_traffic'] == 'taxi'%} checked {%endif%}>  
+                    <label for="rddriving">驾车</label>
+                    <input type="radio" name="return_dest_traffic" id="rddriving" value="driving" {% if pref['return_dest_traffic'] == 'driving'%} checked {%endif%}>
+                </fieldset>
+
+                <div data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
+                <h3>详细设置</h3>
+                <h3>火车偏好</h3>
+                <fieldset data-role="controlgroup" data-type="horizontal">
+                    <legend>影响因素:</legend>
+                    <label for="select-native-1">价格</label>
+                    <select name="train_price" id="select-native-1" data-native-menu="false">
+                        <option>价格</option>
+                        <option value="1" {% if pref['train_qos'][0]=='1' %} selected="selected" {%endif%}>低</option>
+                        <option value="0" {% if pref['train_qos'][0]=='0' %} selected="selected" {%endif%}>忽略</option>
+                        <option value="-1" disabled="disabled">高</option>
+                    </select>
+                    <label for="select-native-2">开车时间</label>
+                    <select name="train_depart_time" id="select-native-2" data-native-menu="false">
+                        <option>开车时间</option>
+                        <option value="#" disabled="disabled">早</option>
+                        <option value="1" {% if pref['train_qos'][1]=='1' %} selected="selected" {%endif%}>中午</option>
+                        <option value="0" {% if pref['train_qos'][1]=='0' %} selected="selected" {%endif%}>忽略</option>
+                        <option value="#" disabled="disabled">晚</option>
+                    </select>
+                    <label for="select-native-3">历时</label>
+                    <select name="train_duration" id="select-native-3" data-native-menu="false">
+                        <option>历时</option>
+                        <option value="1" {% if pref['train_qos'][2]=='1' %} selected="selected" {%endif%}>短</option>
+                        <option value="0" {% if pref['train_qos'][2]=='0' %} selected="selected" {%endif%}>忽略</option>
+                        <option value="#" disabled="disabled">长</option>
+                    </select>
+                </fieldset>
+                <fieldset data-role="controlgroup" data-type="horizontal">
+                    <legend>车次类型(多选)：</legend>
+                    <label for="tt-g">G</label>
+                    <input type="checkbox" name="train_type" id="tt-g" value="G" {% if 'G' in pref['train_type'] %} checked {%endif%}>
+                    <label for="tt-c">C</label>
+                    <input type="checkbox" name="train_type" id="tt-c" value="C" {% if 'C' in pref['train_type'] %} checked {%endif%}>
+                    <label for="tt-d">D</label>
+                    <input type="checkbox" name="train_type" id="tt-d" value="D" {% if 'D' in pref['train_type'] %} checked {%endif%}>
+                    <label for="tt-z">Z</label>
+                    <input type="checkbox" name="train_type" id="tt-z" value="Z" {% if 'Z' in pref['train_type'] %} checked {%endif%}>
+                    <label for="tt-t">T</label>
+                    <input type="checkbox" name="train_type" id="tt-t" value="T" {% if 'T' in pref['train_type'] %} checked {%endif%}>
+                    <label for="tt-k">K</label>
+                    <input type="checkbox" name="train_type" id="tt-k" value="K" {% if 'K' in pref['train_type'] %} checked {%endif%}>
+                    <label for="tt-o">其他</label>
+                    <input type="checkbox" name="train_type" id="tt-o" value="1234567890" {% if '1234567890' in pref['train_type'] %} checked {%endif%}>
+                    <input type="hidden" name="train_type_">
+                </fieldset>
+
+                <h3>航班偏好</h3>
+                <fieldset data-role="controlgroup" data-type="horizontal">
+                    <legend>影响因素:</legend>
+                    <label for="select-native-11">价格</label>
+                    <select name="flight_price" id="select-native-11" data-native-menu="false">
+                        <option value="jiage" data-placeholder="true">价格</option>
+                        <option value="1" {% if pref['flight_qos'][0]=='1' %} selected="selected" {%endif%}>低</option>
+                        <option value="0" {% if pref['flight_qos'][0]=='0' %} selected="selected" {%endif%}>忽略</option>
+                        <option value="-1" disabled="disabled">高</option>
+                    </select>
+                    <label for="select-native-12">开车时间</label>
+                    <select name="flight_depart_time" id="select-native-12" data-native-menu="false">
+                        <option>开车时间</option>
+                        <option value="#" disabled="disabled">早</option>
+                        <option value="1" {% if pref['flight_qos'][1]=='1' %} selected="selected" {%endif%}>中午</option>
+                        <option value="0" {% if pref['flight_qos'][1]=='0' %} selected="selected" {%endif%}>忽略</option>
+                        <option value="#" disabled="disabled">晚</option>
+                    </select>
+                    <label for="select-native-13">准点率</label>
+                    <select name="flight_ontime_rate" id="select-native-13"  data-native-menu="false">
+                        <option>准点率</option>
+                        <option value="1" {% if pref['flight_qos'][2]=='1' %} selected="selected" {%endif%}>高</option>
+                        <option value="0" {% if pref['flight_qos'][2]=='0' %} selected="selected" {%endif%}>忽略</option>
+                        <option value="#" disabled="disabled">低</option>
+                    </select>
+                </fieldset>
+                <fieldset data-role="controlgroup" data-type="horizontal">
+                    <legend>航空公司(多选)：</legend>
+                    <label for="fc-ca">中国国航</label>
+                    <input type="checkbox" name="flight_company" id="fc-ca" value="CA" {% if 'CA' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-cz">南方航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-cz" value="CZ" {% if 'CZ' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-mu">东方航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-mu" value="MU" {% if 'MU' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-bk">奥凯航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-bk" value="BK" {% if 'BK' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-jd">首都航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-jd" value="JD" {% if 'JD' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-gj">长龙航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-gj" value="GJ" {% if 'GJ' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-9c">春秋航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-9c" value="9C" {% if '9C' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-eu">成都航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-eu" value="EU" {% if 'EU' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-cn">大新华航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-cn" value="CN" {% if 'CN' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-dz">东海航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-dz" value="DZ" {% if 'DZ' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-ns">河北航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-ns" value="NS" {% if 'NS' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-hu">海南航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-hu" value="HU" {% if 'HU' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-g5">华夏航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-g5" value="G5" {% if 'G5' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-HO">吉祥航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-HO" value="HO" {% if 'HO' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-ky">昆明航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-ky" value="KY" {% if 'KY' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-qw">青岛航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-qw" value="QW" {% if 'QW' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-3u">四川航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-3u" value="3U" {% if '3U' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-SC">山东航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-SC" value="SC" {% if 'SC' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-ZH">深圳航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-ZH" value="ZH" {% if 'ZH' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-FM">上海航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-FM" value="FM" {% if 'FM' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-GS">天津航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-GS" value="GS" {% if 'GS' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-PN">西部航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-PN" value="PN" {% if 'PN' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-TV">西藏航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-TV" value="TV" {% if 'TV' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-JR">幸福航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-JR" value="JR" {% if 'JR' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-MF">厦门航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-MF" value="MF" {% if 'MF' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-8L">祥鹏航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-8L" value="8L" {% if '8L' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-YI">英安航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-YI" value="YI" {% if 'YI' in pref['flight_company'] %} checked {%endif%}>
+                    <label for="fc-KN">中国联合航空</label>
+                    <input type="checkbox" name="flight_company" id="fc-KN" value="KN" {% if 'KN' in pref['flight_company'] %} checked {%endif%}>
+                    <input type="hidden" name="flight_company_">
+                </fieldset>
+
+                <h3>餐饮住宿详细</h3>
+                <label for="h-radius">酒店范围/米:</label>
+                <input type="range" name="hotel_radius" id="h-radius" value="{{pref.hotel_radius}}" min="0" max="3000" step="500" data-highlight="true">
+                <label for="ci-buffer">办理入住时间/分钟:</label>
+                <input type="range" name="check_in_buffer" id="ci-buffer" value="{{pref.check_in_buffer}}" min="0" max="120" step="10" data-highlight="true">
+                <label for="co-buffer">办理离店时间/分钟:</label>
+                <input type="range" name="check_out_buffer" id="co-buffer" value="{{pref.check_out_buffer}}" min="0" max="120" step="10" data-highlight="true">
+
+                <label for="r-radius">餐厅范围/米:</label>
+                <input type="range" name="restaurant_radius" id="r-radius" value="{{pref.restaurant_radius}}" min="0" max="3000" step="500" data-highlight="true">
+                <label for="m-buffer">餐饮时间/分钟:</label>
+                <input type="range" name="meal_buffer" id="m-buffer" value="{{pref.meal_buffer}}" min="0" max="120" step="10" data-highlight="true">
+
+                <h3>时间偏好</h3>
+                <label for="wb-buffer">公交候车时间/分钟:</label>
+                <input type="range" name="wait_bus_buffer" id="wb-buffer" value="{{pref.wait_bus_buffer}}" min="0" max="60" step="10" data-highlight="true">
+                <label for="wta-buffer">打车候车时间/分钟:</label>
+                <input type="range" name="wait_taxi_buffer" id="wta-buffer" value="{{pref.wait_taxi_buffer}}" min="0" max="60" step="10" data-highlight="true">
+                <label for="wtr-buffer">火车候车时间/分钟:</label>
+                <input type="range" name="wait_train_buffer" id="wtr-buffer" value="{{pref.wait_train_buffer}}" min="0" max="120" step="10" data-highlight="true">
+                <label for="wf-buffer">航班候机时间/分钟:</label>
+                <input type="range" name="wait_flight_buffer" id="wf-buffer" value="{{pref.wait_flight_buffer}}" min="0" max="180" step="10" data-highlight="true">
+
+                <label for="wa-buffer">活动侯场时间/分钟:</label>
+                <input type="range" name="wait_act_buffer" id="wa-buffer" value="{{pref.wait_act_buffer}}" min="0" max="60" step="10" data-highlight="true">
+                </div>
+               <!--  <input type="submit" value="提交"> -->
+            </form>
+        <!--
+        <div data-role="footer" data-position="fixed">
+            <h1 style="text-align:left">{{user.nickname}}</h1>
+        </div>
+        -->
+{% endblock %}
+{% block body %}
+     
+{% endblock %}

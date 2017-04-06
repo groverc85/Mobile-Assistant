@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block title %}移动生活小秘书{% endblock %}
+{% block head %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.0.8/css/swiper.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.0.8/css/swiper.min.css">
+   
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.0.8/js/swiper.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.0.8/js/swiper.min.js"></script>
+  
+  <style type="text/css">
+    /*
+    #header {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    */
+    [data-role="content"]  {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .service-a {float: left; width: 33%;}
+    .service-b {float: left; width: 33%;}
+    .service-c {float: left; width: 33%;}
+    
+  </style>
+{% endblock %}
+
+{% block header %}首页{% endblock %}
+{% block content %}
+  <div id="header">
+    <a href="http://moblife.duapp.com/">
+      <img id="headerimg" src="{{url_for('.static', filename = 'images/headicon.png')}}">
+    </a>
+  </div>
+
+  <!-- Slider main container -->
+  <div class="swiper-container">
+    <!-- Additional required wrapper -->
+    <div class="swiper-wrapper">
+        <!-- Slides -->
+        <div class="swiper-slide"><img src="{{url_for('.static', filename = 'images/2.png')}}"></div>
+        <div class="swiper-slide"><img src="{{url_for('.static', filename = 'images/4.png')}}"></div>
+        <div class="swiper-slide"><img src="{{url_for('.static', filename = 'images/3.png')}}"></div>
+    </div>
+    <!-- If we need pagination -->
+    <div class="swiper-pagination"></div>
+    
+    <!-- If we need navigation buttons -->
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+    
+    <!-- If we need scrollbar -->
+    <div class="swiper-scrollbar"></div>
+    <!--<div id="slidesjs-log">Slide <span class="slidesjs-slide-number"></span> of 3</div>-->
+  </div>
+  <br>
+  <table>
+    <tr>
+      <td><a href="http://m.weather.com.cn/"><img src="{{url_for('.static', filename = 'images/qweather.png')}}"></a></td>
+      <td><a href="{{url_for('.basic_plane', openid = openid)}}"><img src="{{url_for('.static', filename = 'images/qflight.png')}}"></a></td>
+      <td><a href="{{url_for('.basic_train', openid = openid)}}"><img src="{{url_for('.static', filename = 'images/qtrain.png')}}"></a></td>
+    </tr>
+    <tr>
+      <td><a href="{{url_for('.basic_lodging', openid = openid)}}"><img src="{{url_for('.static', filename = 'images/qhotel.png')}}"></a></td>
+      <td><a href="http://m.dianping.com/"><img src="{{url_for('.static', filename = 'images/qfood.png')}}"></a></td>
+      <td><a href="http://map.baidu.com"><img src="{{url_for('.static', filename = 'images/qtraffic.png')}}"></a></td>
+    </tr>
+  </table>
+  
+  <script>
+  $(document).ready(function () {
+    $('[data-role="content"]').width($('#headerimg').width());
+    $('.swiper-container').height(250);
+    //$('.swiper-container').width($('#headerimg').width());
+    //$('.ui-grid-b').height($('#headerimg').width()/3);
+
+    var mySwiper = new Swiper ('.swiper-container', {
+      initialSlide: 0,
+      // Optional parameters
+      direction: 'horizontal',
+      loop: false,
+      
+      // If we need pagination
+      pagination: '.swiper-pagination',
+      
+      // Navigation arrows
+      nextButton: '.swiper-button-next',
+      prevButton: '.swiper-button-prev',
+      
+      // And if we need scrollbar
+      scrollbar: '.swiper-scrollbar',
+      onSlideChangeEnd(mySwiper) {
+        // Change slide number on animation complete
+        $('#slidesjs-log .slidesjs-slide-number').text(mySwiper.activeIndex);
+      }
+    });
+  });
+  </script>
+{% endblock%}

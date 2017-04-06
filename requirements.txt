@@ -1,0 +1,8 @@
+MySQL-python
+bae_log
+flask
+Flask-SQLAlchemy
+Flask-Session
+redis
+sqlalchemy
+requests

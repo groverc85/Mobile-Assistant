@@ -1,0 +1,21 @@
+﻿{% extends 'base.html' %}
+{% block title %}酒店列表{% endblock %}
+{% block content %}
+    	  <ul data-role="listview" data-inset="true">
+    	  	{% if noResult == True %}
+    	  		<p>无查询结果！<p>
+    	  	{% else %}
+    			{% for hotel in hotels %}
+    			  <li><a href="{{hotel.url}}" rel="external">
+    			  		<h2>{{hotel.hotelName}}</h2>
+    			  		<p>地址：{{hotel.address}} 价格：{{hotel.price}}</p>
+    			  		<p class="ui-li-aside"></p>
+    			  	  </a>
+    			  </li>
+    			{% endfor %}
+    		{% endif %}
+    	  </ul>
+{% endblock%}
+{% block footer %}
+        <h1>我是你的小秘书</h1>
+{% endblock %}

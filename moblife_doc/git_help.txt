@@ -1,0 +1,34 @@
+﻿下载代码到本地
+git clone https://git.duapp.com/appidqbp951dpvf
+
+cd appidqbp951dpvf
+
+修改代码之后提交
+git add -A
+git commit -m 'modify info'
+
+提交到服务器
+git push
+
+从服务器下载最新代码（别人改过的）
+git pull
+
+其他命令
+
+git保存用户名密码，避免每次输入的方法
+http://www.cnblogs.com/ballwql/p/3462104.html
+
+
+git windows中文乱码问题
+文本文件，代码文件统一使用UTF-8无BOM编码
+解决git bash下ls中文乱码
+在"C:\Program Files (x86)\Git\etc\git-completion.bash"中添加：
+alias ls='ls --show-control-chars --color=auto'
+
+git status中文目录显示为八进制数字的问题
+在git bash中输入：
+git config --global core.quotepath false
+
+
+问题： git error: RPC failed; result=22, HTTP code = 411 
+解决方法：git config http.postBuffer 524288000 （改一下git的传输字节限制）

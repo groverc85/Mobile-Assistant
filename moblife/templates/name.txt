@@ -1,0 +1,12 @@
+act:act_composition 时间轴
+    act_creat       新建活动
+    act_list        活动列表
+    act_pref        偏好设置
+
+查询类：plane/hotel/train   _query
+查询结果                    _list
+详细信息                    _detail
+
+
+确认订单  order_confirm
+订单列表  order_list

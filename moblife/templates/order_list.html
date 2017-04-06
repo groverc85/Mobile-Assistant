@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1"> 
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+        <link rel="stylesheet" href="{{url_for('.static', filename = 'comm.css')}}">
+        <script src="http://cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+        <style>
+            .item {
+            	margin: 0 auto;
+            	width: 90%;
+            	min-height: 30px;
+            	background-color: #ffffff;
+            	border: 2px solid;
+            	border-color: #fefefe;
+            	border-radius: 8px;
+
+            }
+            .first-line {
+            	border-bottom: 1px dashed;
+            	border-color: #000000;
+            	width: 100%;
+            	
+            }
+            .second-line {	
+            	width: 100%;
+            }
+            .list-title {
+            	padding: 0px 20px;
+            	line-height: 3em;
+            	border-right: 1px solid;
+            	display: inline-block;
+            	width: 85%;
+            	
+            }
+            .list-content {
+            	padding: 10px 20px;
+            	display: inline-block;
+            	border-right: 1px solid;
+            	width: 85%;
+
+            }
+            .delete {	
+            	text-align: right;
+            	display: inline-block;
+            	width: 7%;
+                display: table-cell;
+                vertical-align:middle;
+                /*设置水平居中*/
+                text-align:center;
+
+            }
+            .edit {
+            	height: 100%;
+            	display: inline-block;
+            	width: 7%;
+
+            }
+            .delete img {
+            	height: 40%;
+            	width: 40%;	
+            }
+            /*new era*/
+            .listtable {
+                width: 100%;
+                margin: auto;
+                background-color: #ffffff;
+                border-color: #fefefe;
+                border-radius: 8px;
+            }
+            .upline {
+                border-bottom: 1px dashed;
+                border-color: #000000;
+            }
+            .leftup, .rightup {
+                padding: 10px 20px;
+                border-bottom: 1px dashed;
+                border-color: #000000;
+            }
+            .leftdown, .rightdown {
+                padding: 10px 20px;
+            }
+            .leftup, .leftdown {
+                width: 90%;
+            }
+            .rightdown, .rightup {
+                text-align:center;
+                border-left: 1px solid;
+                border-color: #000000;
+            }
+            .flashes {
+                color:blue;
+                text-align:center;
+                background-color:#99FFFF;
+                padding:5px 5px 5px 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <div data-role="page" style="background:#e9f0f5">
+            <div id="base-bghead" data-role="header">订单列表</div>
+	    {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class=flashes>
+                {% for category, message in messages %}
+                    <div class="{{ category }}">{{ message }}</div>
+                {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+            <div data-role="content">
+                {% for order in train_orders %}
+                <table class="listtable">
+                    <tr class="upline">
+                        <td class="leftup">{{order.act_title}}:{{order.begin_datetime}}@{{order.dest_city}}</td>
+                        <td class="rightup"><img src="{{url_for('.static', filename = 'images/del.png', _external = True)}}"></td>
+                    </tr>
+                    <tr class="downline">
+                        <td class="leftdown">
+                            <p>车次：{{order.trainno}}</p>
+                            <p>{{order.depart_station}} -- {{order.arrive_station}}</p>
+                            <p>{{order.depart_datetime}} -- {{order.arrive_datetime}}</p>
+                            <p>席别：{{order.ticket_type}}</p>
+                            <p>价格：{{order.price}}</p>
+                            <p style="color:green">等待付款</p>
+                        </td>
+                        <td class="rightdown"><a href="http://www.baidu.com"><img src="{{url_for('.static', filename = 'images/edit.png', _external = True)}}"></a></td>
+                    </tr>
+                </table>
+                <br>
+                <br>
+                {% endfor %}
+                {% for order in flight_orders %}
+                <table class="listtable">
+                    <tr class="upline">
+                        <!--<td class="leftup">{{order.actname}}{{order.actdatetime}}</td>-->
+                        <td class="rightup"><img src="{{url_for('.static', filename = 'images/del.png', _external = True)}}"></td>
+                    </tr>
+                    <tr class="downline">
+                        <td class="leftdown">
+                            <p>航班：{{order.flightno}}</p>
+                            <p>{{order.depart_airport}} -- {{order.arrive_airport}}</p>
+                            <p>{{order.depart_datetime}} -- {{order.arrive_datetime}}</p>
+                            <p>席别：{{order.ticket_type}}</p>
+                            <p>价格：{{order.price}}</p>
+                            <p style="color:green">等待付款</p>
+                        </td>
+                        <td class="rightdown"><a href="http://www.baidu.com"><img src="{{url_for('.static', filename = 'images/edit.png', _external = True)}}"></a></td>
+                    </tr>
+                </table>
+                <br>
+                <br>
+                {% endfor %}{% for order in hotel_orders %}
+                <table class="listtable">
+                    <tr class="upline">
+                        <!--<td class="leftup">{{order.actname}}{{order.actdatetime}}</td>-->
+                        <td class="rightup"><img src="{{url_for('.static', filename = 'images/del.png', _external = True)}}"></td>
+                    </tr>
+                    <tr class="downline">
+                        <td class="leftdown">
+                            <p>名称：{{order.hotelname}}</p>
+                            <p>{{order.check_in_date}} -- {{order.check_out_date}}</p>
+                            <p>地址：{{order.address}}</p>
+                            <p>价格：{{order.price}}</p>
+                            <p style="color:green">等待付款</p>
+                        </td>
+                        <td class="rightdown"><a href="http://www.baidu.com"><img src="{{url_for('.static', filename = 'images/edit.png', _external = True)}}"></a></td>
+                    </tr>
+                </table>
+                <br>
+                <br>
+                {% endfor %}
+
+            </div>
+            <div data-role="footer" data-position="fixed">
+                <h1 style="text-align:left">{{user.nickname}}</h1>
+            </div>
+        </div>
+    </body>
+</html>

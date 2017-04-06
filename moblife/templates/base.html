@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1"> 
+        <title>{% block title %}小秘书{% endblock %}</title>
+        <link rel="stylesheet" href="{{url_for('.static', filename = 'jquery.mobile-1.4.5.min.css')}}">
+        <link rel="stylesheet" href="{{url_for('.static', filename = 'comm.css')}}">
+        <link rel="stylesheet" href="{{url_for('.static', filename = 'bootstrap/css/bootstrap.min.css')}}">
+        <link rel="stylesheet" href="{{url_for('.static', filename = 'bootstrap/css/bootstrap-theme.min.css')}}">
+        <script src="http://cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script>
+        <script src="{{url_for('.static', filename = 'jquery.mobile-1.4.5.min.js')}}"></script>
+        <script src="{{url_for('.static', filename = 'bootstrap/js/bootstrap.min.js')}}"></script>
+        <style type="text/css">
+            body {
+                font-family: "Microsoft yahei", serif;
+                color: #7f8c97;
+                background: #e9f0f5;
+            }
+            .flashes {
+                color:blue;
+                text-align:center;
+                background-color:#99FFFF;
+                padding:10px 5px 10px 5px;
+            }
+            #right-top
+            {
+                position: fixed;
+                z-index: 9;
+                right: 20px;
+                top: 10px;
+            }
+             #logout {
+                  margin-top: 10px;
+            }
+             #header {
+                text-align: center;
+                color: #ffffff;
+                line-height: 70px;
+                height: 70px;
+                /*padding: 15px;*/
+                font-size: 1.3em;
+                background: #303e49;
+            }
+        </style>
+        <script type="text/javascript">
+            $(function() {
+                $( "[data-role='navbar']" ).navbar();
+                $( "[data-role='header'], [data-role='footer']" ).toolbar();
+            });
+            // Update the contents of the toolbars
+            $( document ).on( "pagecontainerchange", function() {
+                // Each of the four pages in this demo has a data-title attribute
+                // which value is equal to the text of the nav button
+                // For example, on first page: <div data-role="page" data-title="Info">
+                var current = document.title;
+                // Change the heading
+                //$( "[data-role='header'] h1" ).text( current );
+                // Remove active class from nav buttons
+                $( "[data-role='navbar'] a.ui-btn-active" ).removeClass( "ui-btn-active" );
+                // Add active class to current nav button
+                $( "[data-role='navbar'] a" ).each(function() {
+                    if ( $( this ).text() === current ) {
+                        $( this ).addClass( "ui-btn-active" );
+                    }
+                });
+            });
+        </script>
+        
+        {% block head %} {% endblock %} 
+      
+    </head>
+    <body>
+        <div data-role="page" style="background:#e9f0f5">
+            <div id="base-bghead" data-position="fixed" data-role="header">{% block header %}智能小秘书{% endblock %}   
+            {% if user %}
+                 <a href="javascript:;" id="logout" data-icon="user" class="ui-btn-left dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" data-theme="b" >
+                 {{user.nickname}}</a>
+                 <ul class="dropdown-menu">
+                    <li><a href="{{url_for('.logout')}} " data-ajax="false" <span class="glyphicon glyphicon-log-out"></span>注销</a>
+                    </li>
+                 </ul>
+            {% endif %}</div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flashes">
+                    {% for category, message in messages %}
+                        <div class="{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            
+            <div id= "icontent" data-role="content">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+        <div data-role="footer" data-position="fixed" data-theme="a">
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="{{url_for('.index')}}" data-icon="home" data-transition="slide" data-ajax="false" class="ui-btn-active">服务</a></li>
+                    <li><a href="{{url_for('.act_mine')}}" data-icon="bullets" data-transition="slide" data-ajax="false">活动</a></li>
+                    <li><a href="{{url_for('.order')}}" data-icon="shop" data-transition="slide" data-ajax="false">订单</a></li>
+                    <li><a href="{{url_for('.act_pref')}}" data-icon="gear" data-transition="slide" data-ajax="false">设置</a></li>
+                </ul>
+            </div><!-- /navbar -->
+        </div><!-- /footer -->
+        {% block body %}{% endblock %}
+    </body>
+</html>

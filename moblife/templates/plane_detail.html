@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}航班详情{% endblock %}
+{% block content %}
+      <ul data-role="listview" data-inset="true">
+		<li>航班号：{{details.flightNum}}</li>
+		<li>航空公司:{{details.company}}</li>
+		<li>出发地：{{details.dptCityName}} {{details.dptAirport}} {{details.dptTerminal}}</li>
+		<li>抵达地：{{details.arrCityName}} {{details.arrAirport}} {{details.arrTerminal}}</li>
+		<li>起飞时间：{{details.dptTime}}</li>
+		<li>抵达时间：{{details.arrTime}}</li>
+		<li>历时：{{details.durhours}}小时{{details.durmins}}分</li>
+		<li>准点率：{{details.timeRate}}</li>
+	  </ul>
+      <p><a href="#" data-role="button" data-rel="back">预定</a></p>
+{% endblock%}

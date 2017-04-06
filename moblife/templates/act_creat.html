@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block title %}活动{% endblock %}
+{% block head %}
+     <!-- 只用到了datetimepicker-->
+        <link rel="stylesheet" href="{{url_for('.static', filename = 'datetimepicker.css')}}">
+        <!--<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap-validator/0.4.5/css/bootstrapvalidator.css">-->
+        <!--<script src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>-->
+        <!--<script src="http://cdn.bootcss.com/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>-->
+        <script src="{{url_for('.static', filename = 'datetimepicker.min.js')}}"></script>
+        <!--<script src="{{url_for('.static', filename = 'datetimepickercn.js')}}" charset="UTF-8"></script>-->
+        <script src="http://api.map.baidu.com/api?v=2.0&ak=Nx80Sg2TOypzPcKRHz6P8TtE"></script>
+        <script src="http://cdn.bootcss.com/bootstrap-validator/0.4.5/js/bootstrapvalidator.js"></script>
+        <script src="{{url_for('.static', filename = 'act_creat.js')}}"></script><!--页面JS控件-->
+{% endblock %}
+
+{% block header %}{% if act.id %}修改活动{% else %}新建活动{% endif %}
+
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid" style="color:#000000">
+            <div class="row">
+                <div class="col-md-12">
+                    <form id="form1" method="POST" action="{{url_for('.act_new')}}">
+                        <h3>出发信息</h3>
+                        <div class="form-group">
+                            <label for="actname">活动名称</label>
+                            <input type="text" class="form-control" name="title" id="actname" value="{{act.title}}" placeholder="活动的名称 如 北京出差">
+                        </div>
+                        <!--
+                        <div class="form-group">
+                            <label for="setoutcity">出发城市</label>
+                            <input type="text" class="form-control" name="startCity" id="setoutcity" value="" placeholder="出发的城市 如 杭州">
+                            <div class="citywrap">
+                                <div class="citylist" id="citylist1">
+                                    <p><span id="hotcity">热门城市</span></p>
+                                    <table class="table" id="table1">
+                                        <tr><td>北京</td><td>上海</td><td>广州</td><td>深圳</td><td>成都</td></tr>
+                                        <tr><td>重庆</td><td>厦门</td><td>昆明</td><td>杭州</td><td>西安</td></tr>
+                                        <tr><td>武汉</td><td>长沙</td><td>南京</td><td>大连</td><td>郑州</td></tr>
+                                        <tr><td>青岛</td><td>天津</td><td>三亚</td><td>海口</td><td>乌鲁木齐</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        -->
+                        <div id="l-map" style="display:none;"></div>
+                        <div class="form-group">
+                            <label for="setoutaddress">具体地址</label>
+                            <input type="text" class="form-control" name="start_address" id="setoutaddress" value="{{act.start_address}}" placeholder="出发的详细地址">
+                        </div>
+                        <div class="citywrap">
+                            <div class="addresslist" id="addresslist1" style="border-bottom:1px"></div>
+                        </div>
+                        <h3>活动信息</h3>
+                        <!--
+                        <div class="form-group">
+                            <label for="arrcity">抵达城市</label>
+                            <input type="text" class="form-control" name="destCity" id="arrcity" value="" placeholder="抵达的城市 如 北京">
+                            <div class="citywrap">
+                                <div class="citylist" id="citylist2">
+                                    <p><span id="hotcity">热门城市</span></p>
+                                    <table class="table" id="table2">
+                                        <tr><td>北京</td><td>上海</td><td>广州</td><td>深圳</td><td>成都</td></tr>
+                                        <tr><td>重庆</td><td>厦门</td><td>昆明</td><td>杭州</td><td>西安</td></tr>
+                                        <tr><td>武汉</td><td>长沙</td><td>南京</td><td>大连</td><td>郑州</td></tr>
+                                        <tr><td>青岛</td><td>天津</td><td>三亚</td><td>海口</td><td>乌鲁木齐</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        -->
+                        <div class="form-group">
+                            <label for="actaddress">活动地点</label>
+                            <input type="text" class="form-control" name="dest_address" id="actaddress" value="{{act.dest_address}}" placeholder="活动的详细地点">
+                        </div>
+                        <div class="citywrap">
+                            <div class="addresslist" id="addresslist2" style="border-bottom:1px"></div>
+                        </div>
+                        <div id="searchResultPanel2" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+                        <div class="form-group">
+                            <label>开始时间</label>
+                            <input type="text" class="form-control" name="begin_datetime" id="setouttime" value="{{act.begin_datetime}}" readonly="readonly">
+                        </div>
+                        <div class="form-group">
+                            <label for="acttime">结束时间</label>
+                            <input type="text" class="form-control" name="end_datetime" id="acttime" value="{{act.end_datetime}}" readonly="readonly">
+                        </div>
+                        <div class="form-group">    
+                            <label for="acttime">备注</label>
+                            <textarea class="form-control" rows="1" name="note" id="note"></textarea>
+                        </div>
+                        <!--<input type="hidden" name="openid" id="openid" value="{{user.openid}}">-->
+                        {% if act.id %}
+                        <input type="hidden" name="id" id="id" value="{{act.id}}">
+                        <button type="submit"  class="show-page-loading-msg" data-theme="b" data-textonly="false" data-textvisible="true" data-msgtext="Loading theme b" data-inline="true">保存修改</button>
+                        {% else %}
+                        <button type="submit"  class="show-page-loading-msg" data-theme="b" data-textonly="false" data-textvisible="true" data-msgtext="Loading theme b" data-inline="true">提交活动</button>
+                        {% endif %}
+                    </form>
+                </div>
+            </div> 
+        </div>   
+{% endblock%}
+{% block body %}
+     
+{% endblock %}

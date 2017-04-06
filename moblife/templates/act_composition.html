@@ -1,0 +1,322 @@
+﻿{% extends 'base.html' %}
+{% block title %}行程时间轴{% endblock %}
+{% block head %}
+     <link rel="stylesheet" href="{{url_for('.static', filename = 'timeline.css')}}">
+     <script src="{{url_for('.static', filename = 'modernizr.js')}}"></script>
+        
+{% endblock %}
+
+{% block header %}行程时间轴
+    <div id="right-top"  style="top:0px"class="col-md-2">
+        <button data-ajax="false" class="cd-read-more btn">保存</button>
+    </div>
+{% endblock %}
+
+{% block content %}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class=flashes>
+                {% for category, message in messages %}
+                <div class="{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        {% endwith %}
+       
+        <section id="cd-timeline" class="cd-container">
+            <div class="cd-timeline-block">
+                <div class="cd-timeline-img cd-picture">
+                    <img src="/static/images/cd-icon-picture.svg" alt="Picture">
+                </div><!-- cd-timeline-img -->
+                <div class="cd-timeline-sidetime">
+                    {{leave_timeline[1].time[:10]}}
+                </div>
+
+                <div class="cd-timeline-content">
+                    <h2>{{act.title}}行程开始{{leave_timeline.length}}</h2>
+                    <a href="{{url_for('.order', actid=act.id, leave_timelineid=leave_timelineid, return_timelineid=return_timelineid, order_type='all')}}" class="cd-read-more">一键预定</a>
+                </div>
+            </div>
+
+            {% for time in leave_timeline %}
+            {% if time.time %}
+            <div class="cd-timeline-block">
+                <div class="cd-timeline-img cd-picture">
+                    <img src="/static/images/cd-icon-picture.svg" alt="Picture">
+                </div><!-- cd-timeline-img -->
+                <div class="cd-timeline-sidetime">
+                    {{time.time[5:]}}
+                </div>
+
+                <div class="cd-timeline-content">
+                    <h2>{{time.title}}</h2>
+                    {% if time.type=='driving' %}
+                        <p>{{act.start_city}}前往{{act.dest_city}}</p>
+                        <p>距离：约{{time.detail['distance']// 1000}}千米</p>
+                        <p>历时：约{{time.detail["duration"] // 60}}分</p>
+                        <p>价格：约{{time.detail["detail"][0]["total_price"]}}元</p>
+                        <a href="{{url_for('.direction', leave_timelineid=leave_timelineid, traffic_type='leave_driving')}}" data-ajax="false" class="cd-read-more">导航</a>
+                    {% elif time.type=='train' %}
+                        <p>{{time.detail['from_station_name']}}站开往{{time.detail['to_station_name']}}站</p>
+                        <p>车次:{{time.detail['station_train_code']}}</p>
+                        <p>发车时间:{{time.detail['start_time']}}</p>
+                        <p>抵达时间:{{time.detail['arrive_time']}}</p>
+                        <a href="{{url_for('.order', actid=act.id, leave_timelineid=leave_timelineid, order_type='leave_train')}}" data-ajax="false" class="cd-read-more">预定</a>
+                    {% elif time.type=='plane' %}
+                        <p>{{time.detail['dep_arp']}}机场飞往{{time.detail['arr_arp']}}机场</p>
+                        <p>航班号:{{time.detail['flightNum']}}</p>
+                        <p>起飞时间:{{time.detail['dep_time']}}</p>
+                        <p>抵达时间:{{time.detail['arr_time']}}</p>
+                        <p>准点率:{{time.detail['ontimerate']}}</p>
+                        <a href="{{url_for('.order', actid=act.id, leave_timelineid=leave_timelineid, order_type='leave_flight')}}" data-ajax="false" class="cd-read-more">预定</a>
+                    {% elif time.type=='start_bus' %}
+                        {% for step in time.detail['steps'] %}
+                            <p>{{loop.index}}.{{step[0]['stepInstruction'] | safe}}</p>
+                        {% endfor %}
+                        <p>距离：约{{time.detail['distance'] // 1000}}千米</p>
+                        <p>历时：约{{time.detail["duration"] // 60}}分</p>
+                        <a href="{{url_for('.direction', leave_timelineid=leave_timelineid, traffic_type='leave_start_bus')}}" data-ajax="false" class="cd-read-more">导航</a>
+                    {% elif time.type=='dest_bus' %}
+                        {% for step in time.detail['steps'] %}
+                        <p>{{loop.index}}.{{step[0]['stepInstruction'] | safe}}</p>
+                        {% endfor %}
+                        <p>距离：约{{time.detail['distance'] // 1000}}千米</p>
+                        <p>历时：约{{time.detail["duration"] // 60}}分</p>
+                        <a href="{{url_for('.direction', leave_timelineid=leave_timelineid, traffic_type='leave_start_bus')}}" data-ajax="false" class="cd-read-more">导航</a>
+                    {% elif time.type=='start_taxi' %}
+                        <p>距离：约{{time.detail['distance']// 1000}}千米</p>
+                        <p>历时：约{{time.detail["duration"] // 60}}分</p>
+                        <p>价格：约{{time.detail["detail"][0]["total_price"]}}元</p>
+                        <a href="https://<m class="uber co"></m>m" class="cd-date" data-ajax="false">优步打车</a>
+                        <a href="{{url_for('.direction', leave_timelineid=leave_timelineid, traffic_type='leave_start_taxi')}}" data-ajax="false" class="cd-read-more">导航</a>
+                    {% elif time.type=='dest_taxi' %}
+                        <p>距离：约{{time.detail['distance']// 1000}}千米</p>
+                        <p>历时：约{{time.detail["duration"] // 60}}分</p>
+                        <p>价格：约{{time.detail["detail"][0]["total_price"]}}元</p>
+                        <a href="https://m.uber.com" class="cd-date" data-ajax="false">优步打车</a>
+                        <a href="{{url_for('.direction', leave_timelineid=leave_timelineid, traffic_type='leave_dest_taxi')}}" data-ajax="false" class="cd-read-more">导航</a>
+                    {% elif time.type=='start_driving' %}
+                        <p>距离：约{{time.detail['distance']// 1000}}千米</p>
+                        <p>历时：约{{time.detail["duration"] // 60}}分</p>
+                        <p>价格：约{{time.detail["detail"][0]["total_price"]}}元</p>
+                        <a href="{{url_for('.direction', leave_timelineid=leave_timelineid, traffic_type='leave_start_driving')}}" data-ajax="false" class="cd-read-more">导航</a>
+                    {% elif time.type=='dest_driving' %}
+                        <p>距离：约{{time.detail['distance']// 1000}}千米</p>
+                        <p>历时：约{{time.detail["duration"] // 60}}分</p>
+                        <p>价格：约{{time.detail["detail"][0]["total_price"]}}元</p>
+                        <a href="{{url_for('.direction', leave_timelineid=leave_timelineid, traffic_type='leave_dest_driving')}}" data-ajax="false" class="cd-read-more">导航</a>
+
+                    {% elif time.type=='hotel' %}
+                      <div class="hotel-wrapper">
+                        <input id="hotelcnt" type="hidden" value="{{hotels|length}}">
+                        <input id="nowhotelid" type="hidden" value="{{time.hotelid}}">
+                        {% for hotel in hotels %}
+                            <div class="hotel-item">
+                              <p>酒店名称:{{hotel.name}}</p>
+                              <p>酒店电话:{{hotel.telephone}}</p>
+                              <p>酒店地址:{{hotel.address}}</p>
+                              <a href="{{hotel.detail_info.detail_url}}" class="cd-date">酒店详情</a>
+                              <a href="{{url_for('.order', actid=act.id, leave_timelineid=leave_timelineid, order_type='hotel')}}" data-ajax="false" class="cd-read-more">预定</a>
+                            </div>
+                        {% endfor %}
+                      </div> 
+                    {% elif time.type=='restaurant' %}
+                    <div class="restaurant-wrapper">
+                        <input id="restaurantcnt" type="hidden" value="{{restaurants|length}}">
+                        <input id="nowrestaurantid" type="hidden" value="{{time.restaurantid}}">
+                        {% for restaurant in restaurants %}
+                        <div class="restaurant-item">
+                            <p>餐厅名称：{{time.detail['name']}}</p>
+                            <p>餐厅电话:{{time.detail['telephone']}}</p>
+                            <p>餐厅地址:{{time.detail['address']}}</p>
+                            <p>餐厅评分:{{time.detail.detail_info['overall_rating']}}</p>
+                            <a href="{{time.detail.detail_info.detail_url}}" class="cd-date">餐厅详情</a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% elif time.type=='activity' %}
+                        <p>活动地址:{{act.dest_address}}</p>
+                        <p>活动信息:{{act.note}}</p>
+                        <p>活动开始：{{act.begin_datetime}}</p>
+                    {% endif %}
+                </div> <!-- cd-timeline-content -->
+            </div>
+            {% endif %}
+            {% else %}
+            <div class="cd-timeline-block">
+                <div class="cd-timeline-img cd-picture">
+                    <img src="/static/images/cd-icon-picture.svg" alt="Picture">
+                </div><!-- cd-timeline-img -->
+                <div class="cd-timeline-sidetime">
+                    sorry!
+                </div>
+
+                <div class="cd-timeline-content">
+                    <p>行程时间轴无起程部分</p>
+                </div>
+            </div>
+            {% endfor %}
+
+            {% for time in return_timeline %}
+            {% if time.time %}
+            <div class="cd-timeline-block">
+                <div class="cd-timeline-img cd-picture">
+                    <img src="/static/images/cd-icon-picture.svg" alt="Picture">
+                </div><!-- cd-timeline-img -->
+                <div class="cd-timeline-sidetime">
+                    {{time.time[5:]}}
+                </div>
+
+                <div class="cd-timeline-content">
+                    <h2>{{time.title}}</h2>
+                    {% if time.type=='activity' %}
+                        <p>活动地址:{{act.dest_address}}</p>
+                        <p>活动信息:{{act.note}}</p>
+                        <p>活动结束：{{act.end_datetime}}</p>
+                    {% elif time.type=='driving' %}
+                        <p>{{act.dest_city}}返回{{act.start_city}}</p>
+                        <p>距离：约{{time.detail['distance']// 1000}}千米</p>
+                        <p>历时：约{{time.detail["duration"] // 60}}分</p>
+                        <p>价格：约{{time.detail["detail"][0]["total_price"]}}元</p>
+                        <a href="{{url_for('.direction', return_timelineid=return_timelineid, traffic_type='return_driving')}}" data-ajax="false" class="cd-read-more">导航</a>
+                    {% elif time.type=='train' %}
+                        <p>{{time.detail['from_station_name']}}开往{{time.detail['to_station_name']}}</p>
+                        <p>车次:{{time.detail['station_train_code']}}</p>
+                        <p>发车时间:{{time.detail['start_time']}}</p>
+                        <p>抵达时间:{{time.detail['arrive_time']}}</p>
+                        <a href="{{url_for('.order', actid=act.id, return_timelineid=return_timelineid, order_type='return_train')}}" data-ajax="false" class="cd-read-more">预定</a>
+                    {% elif time.type=='plane' %}
+                        <p>{{time.detail['dep_arp']}}飞往{{time.detail['arr_arp']}}</p>
+                        <p>航班号:{{time.detail['flightNum']}}</p>
+                        <p>起飞时间:{{time.detail['dep_time']}}</p>
+                        <p>抵达时间:{{time.detail['arr_time']}}</p>
+                        <p>准点率:{{time.detail['ontimerate']}}</p>
+                        <a href="{{url_for('.order', actid=act.id, return_timelineid=return_timelineid, order_type='return_flight')}}" data-ajax="false" class="cd-read-more">预定</a>
+                    {% elif time.type=='start_bus' %}
+                        {% for step in time.detail['steps'] %}
+                        <p>{{loop.index}}.{{step[0]['stepInstruction'] | safe}}</p>
+                        {% endfor %}
+                        <p>距离：约{{time.detail['distance'] // 1000}}千米</p>
+                        <p>历时：约{{time.detail["duration"] // 60}}分</p>
+                        <a href="{{url_for('.direction', return_timelineid=return_timelineid, traffic_type='return_start_bus')}}" data-ajax="false" class="cd-read-more">导航</a>
+                    {% elif time.type=='dest_bus' %}
+                        {% for step in time.detail['steps'] %}
+                        <p>{{loop.index}}.{{step[0]['stepInstruction'] | safe}}</p>
+                        {% endfor %}
+                        <p>距离：约{{time.detail['distance'] // 1000}}千米</p>
+                        <p>历时：约{{time.detail["duration"] // 60}}分</p>
+                        <a href="{{url_for('.direction', return_timelineid=return_timelineid, traffic_type='return_dest_bus')}}" data-ajax="false" class="cd-read-more">导航</a>
+                    {% elif time.type=='start_taxi' %}
+                        <p>距离：约{{time.detail['distance']// 1000}}千米</p>
+                        <p>历时：约{{time.detail["duration"] // 60}}分</p>
+                        <p>价格：约{{time.detail["detail"][0]["total_price"]}}元</p>
+                        <a href="https://m.uber.com" class="cd-date" data-ajax="false">优步打车</a>
+                        <a href="{{url_for('.direction', return_timelineid=return_timelineid, traffic_type='return_start_taxi')}}" data-ajax="false" class="cd-read-more">导航</a>
+                    {% elif time.type=='dest_taxi' %}
+                        <p>距离：约{{time.detail['distance']// 1000}}千米</p>
+                        <p>历时：约{{time.detail["duration"] // 60}}分</p>
+                        <p>价格：约{{time.detail["detail"][0]["total_price"]}}元</p>
+                        <a href="https://m.uber.com" class="cd-date" data-ajax="false">优步打车</a>
+                        <a href="{{url_for('.direction', return_timelineid=return_timelineid, traffic_type='return_dest_taxi')}}" data-ajax="false" class="cd-read-more">导航</a>
+                    {% elif time.type=='start_driving' %}
+                        <p>距离：约{{time.detail['distance']// 1000}}千米</p>
+                        <p>历时：约{{time.detail["duration"] // 60}}分</p>
+                        <p>价格：约{{time.detail["detail"][0]["total_price"]}}元</p>
+                        <a href="{{url_for('.direction', return_timelineid=return_timelineid, traffic_type='return_start_driving')}}" data-ajax="false" class="cd-read-more">导航</a>
+                    {% elif time.type=='dest_driving' %}
+                        <p>距离：约{{time.detail['distance']// 1000}}千米</p>
+                        <p>历时：约{{time.detail["duration"] // 60}}分</p>
+                        <p>价格：约{{time.detail["detail"][0]["total_price"]}}元</p>
+                        <a href="{{url_for('.direction', return_timelineid=return_timelineid, traffic_type='return_dest_driving')}}" data-ajax="false" class="cd-read-more">导航</a>
+                    {% endif %}
+                </div> <!-- cd-timeline-content -->
+            </div> <!-- cd-timeline-block -->
+            {% endif %}
+            {% else %}
+            <div class="cd-timeline-block">
+                <div class="cd-timeline-img cd-picture">
+                    <img src="/static/images/cd-icon-picture.svg" alt="Picture">
+                </div><!-- cd-timeline-img -->
+                <div class="cd-timeline-sidetime">
+                    sorry!
+                </div>
+
+                <div class="cd-timeline-content">
+                    <p>行程时间轴无返程部分</p>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="cd-timeline-block">
+                <div class="cd-timeline-img cd-picture">
+                    <img src="/static/images/cd-icon-picture.svg" alt="Picture">
+                </div> <!-- cd-timeline-img -->
+                <div class="cd-timeline-sidetime">
+                    {{return_timeline[1].time[:10]}}
+                </div>
+
+                <div class="cd-timeline-content">
+                    <h2>{{act.title}}行程结束</h2>
+                    <a href="{{url_for('.order', actid=act.id, leave_timelineid=leave_timelineid, return_timelineid=leave_timelineid, order_type='all')}}" class="cd-read-more">一键预定</a>
+                </div>
+            </div> <!-- cd-timeline-block -->
+        </section> <!-- cd-timeline -->
+{% endblock%}
+{% block body %}
+     <script>
+        $(document).ready(function(){
+            var contentlength = $(".cd-timeline-content").width();//内容宽度，决定每条item的宽度
+            var slidelength = $(".cd-timeline-content").innerWidth();//白框的宽度，决定滑动的距离
+
+            var hotelSlideNum = parseInt($("#hotelcnt").val());
+            var nowhotelid = parseInt($("#nowhotelid").val());
+            var hotelcnt = parseInt($("#hotelcnt").val());
+            $(".hotel-wrapper").width(slidelength*hotelSlideNum);//最大显示个数为10
+            $(".hotel-item").width(contentlength);
+            $(".hotel-item").css("left",(-1)*nowhotelid*slidelength);
+
+            var restaurantSlideNum = parseInt($("#restaurantcnt").val());
+            var nowrestaurantid = parseInt($("#nowrestaurantid").val());
+            var restaurantcnt = parseInt($("#restaurantcnt").val());
+            $(".restaurant-wrapper").width(slidelength*restaurantSlideNum);//最大显示个数为10
+            $(".restaurant-item").width(contentlength);
+            $(".restaurant-item").css("left",(-1)*nowrestaurantid*slidelength);
+            
+            //向左滑动事件,hotel-wrappler的left要给一个初值
+            $(".cd-timeline-content").on("swipeleft",function(){
+                if ($(this).children().html() == '入住酒店'&&nowhotelid < hotelcnt-1){
+                    nowhotelid = nowhotelid + 1;
+                    $(".hotel-item").animate({left:( (-1)*nowhotelid*slidelength) + "px"});
+                    $("#nowhotelid").val(nowhotelid);
+                }
+                if ($(this).children().html() == '餐饮' && nowrestaurantid < restaurantcnt-1){
+                    nowrestaurantid = nowrestaurantid + 1;
+                    $(".restaurant-item").animate({left:( (-1)*nowrestaurantid*slidelength) + "px"});
+                    $("#nowrestaurantid").val(nowrestaurantid);
+                }
+            });
+
+            //向右滑动事件
+            $(".cd-timeline-content").on("swiperight",function(){
+                if ($(this).children().html() == '入住酒店' && nowhotelid > 0){
+                    nowhotelid = nowhotelid - 1;
+                    $(".hotel-item").animate({left:( (-1)*nowhotelid*slidelength) + "px"});
+                    $("#nowhotelid").val(nowhotelid);
+                }
+                if ($(this).children().html() == '餐饮' && nowrestaurantid > 0){
+                    nowrestaurantid = nowrestaurantid - 1;
+                    $(".restaurant-item").animate({left:( (-1)*nowrestaurantid*slidelength) + "px"});
+                    $("#nowrestaurantid").val(nowrestaurantid);
+                }
+            });
+
+            $("#right-top").click(function(){
+                var data = {
+                    "nowhotelid": $("#nowhotelid").val(),
+                    "actid": {{act.id}},
+                };
+                $.post("/act/service/", data, function(){alert('保存成功');} );
+            });
+            
+        });
+    </script>
+{% endblock %}
